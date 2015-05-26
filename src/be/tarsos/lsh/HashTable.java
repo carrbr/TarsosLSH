@@ -46,7 +46,7 @@ class HashTable implements Serializable {
 	 * Contains the mapping between a combination of a number of hashes (encoded
 	 * using an integer) and a list of possible nearest neighbours
 	 */
-	private HashMap<Integer,List<Vector>> hashTable;
+	private HashMap<Integer,List<String>> hashTable;
 	private HashFunction[] hashFunctions;
 	private HashFamily family;
 	
@@ -61,7 +61,7 @@ class HashTable implements Serializable {
 	 *            functions, and is used therefore.
 	 */
 	public HashTable(int numberOfHashes,HashFamily family){
-		hashTable = new HashMap<Integer, List<Vector>>();
+		hashTable = new HashMap<Integer, List<String>>();
 		this.hashFunctions = new HashFunction[numberOfHashes];
 		for(int i=0;i<numberOfHashes;i++){
 			hashFunctions[i] = family.createHashFunction();
@@ -80,12 +80,12 @@ class HashTable implements Serializable {
 	 *         candidates are found, an empty list is returned, otherwise, the
 	 *         list of candidates is returned.
 	 */
-	public List<Vector> query(Vector query) {
+	public List<String> query(Vector query) {
 		Integer combinedHash = hash(query);
 		if(hashTable.containsKey(combinedHash))
 			return hashTable.get(combinedHash);
 		else
-			return new ArrayList<Vector>();
+			return new ArrayList<String>();
 	}
 
 	/**
@@ -95,9 +95,9 @@ class HashTable implements Serializable {
 	public void add(Vector vector) {
 		Integer combinedHash = hash(vector);
 		if(! hashTable.containsKey(combinedHash)){
-			hashTable.put(combinedHash, new ArrayList<Vector>());
+			hashTable.put(combinedHash, new ArrayList<String>());
 		}
-		hashTable.get(combinedHash).add(vector);
+		hashTable.get(combinedHash).add(vector.getKey());
 	}
 	
 	/**

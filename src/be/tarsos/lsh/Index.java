@@ -131,20 +131,25 @@ public class Index implements Serializable{
 	 * @return A list of nearest neighbours, the number of neighbours returned
 	 *         lays between zero and a chosen maximum.
 	 */
-	public List<Vector> query(final Vector query,int maxSize){
-		Set<Vector> candidateSet = new HashSet<Vector>();
+	public List<String> query(final Vector query,int maxSize){
+		Set<String> candidateSet = new HashSet<String>();
 		for(HashTable table : hashTable){
-			List<Vector> v = table.query(query);
+			List<String> v = table.query(query);
 			candidateSet.addAll(v);
 		}
-		List<Vector>candidates = new ArrayList<Vector>(candidateSet);
+		List<String>candidates = new ArrayList<String>(candidateSet);
 		evaluated += candidates.size();
+		/*
+		 * This is no longer computable within the LSH itself.  Client code will need
+		 * to make this evaluation for themselves
+		 *
 		DistanceMeasure measure = family.createDistanceMeasure();
 		DistanceComparator dc = new DistanceComparator(query, measure);
 		Collections.sort(candidates,dc);
 		if(candidates.size() > maxSize){
 			candidates = candidates.subList(0, maxSize);
 		}
+		*/
 		return candidates;
 	}
 	

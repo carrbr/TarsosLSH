@@ -56,6 +56,12 @@ public class LSH {
 		this.hashFamily = hashFamily;
 	}
 	
+	public LSH(Index index,HashFamily hashFamily) {
+		this.index = index;
+		Index.serialize(this.index);
+		this.hashFamily = hashFamily;
+	}
+	
 	/**
 	 * Build an index by creating a new one and adding each vector.
 	 * 
@@ -79,7 +85,7 @@ public class LSH {
 	 * @param neighboursSize the expected size of the neighbourhood.
 	 * @param measure  The measure to use to check for correctness.
 	 */
-	public void benchmark(int neighboursSize,DistanceMeasure measure){
+/*	public void benchmark(int neighboursSize,DistanceMeasure measure){
 		long startTime = 0;
 		double linearSearchTime = 0;
 		double lshSearchTime = 0;
@@ -91,14 +97,14 @@ public class LSH {
 		for(int i = 0 ; i < dataset.size() ; i++){
 			Vector query = dataset.get(i);
 			startTime = System.currentTimeMillis();
-			List<Vector> lshResult = index.query(query,neighboursSize);
+			List<String> lshResult = index.query(query,neighboursSize);
 			lshSearchTime += System.currentTimeMillis() - startTime;	
 			
 			startTime = System.currentTimeMillis();
-			List<Vector> linearResult = linearSearch(dataset,query,neighboursSize,measure);
+			List<String> linearResult = linearSearch(dataset,query,neighboursSize,measure);
 			linearSearchTime += System.currentTimeMillis() - startTime;
 			
-			Set<Vector> set = new HashSet<Vector>();
+			Set<String> set = new HashSet<String>();
 			set.addAll(lshResult);
 			set.addAll(linearResult);
 			//intersectionSize += set.size();
@@ -132,7 +138,7 @@ public class LSH {
 		
 		//System.out.printf("%10s%15s%10s%10s%10s%10s%10s%10s\n","#hashes","#hashTables","Correct","Touched","linear","lsh","Precision","Recall");
 		System.out.printf("%10d%15d%9.2f%%%9.2f%%%9.4fs%9.4fs%9.2f%%%9.2f%%\n",hashes,hashTables,percentageCorrect,percentageTouched,linearSearchTime,lshSearchTime,precision,recall);
-	}
+	}*/
 	
 	/**
 	 * Find the nearest neighbours for a query in the index.
@@ -147,7 +153,7 @@ public class LSH {
 	 *         list length contains the maximum number of elements, or less.
 	 *         Zero elements are possible.
 	 */
-	public List<Vector> query(final Vector query,int neighboursSize){
+	public List<String> query(final Vector query,int neighboursSize){
 		return index.query(query,neighboursSize);
 	}
 
@@ -170,16 +176,16 @@ public class LSH {
 	 * @return The list of k nearest neighbours to the query vector, according
 	 *         to the given distance measure.
 	 */
-	public static List<Vector> linearSearch(List<Vector> dataset,final Vector query,int resultSize,DistanceMeasure measure){
+/*	public static List<String> linearSearch(List<Vector> dataset,final Vector query,int resultSize,DistanceMeasure measure){
 		DistanceComparator dc = new DistanceComparator(query, measure);
-		PriorityQueue<Vector> pq = new PriorityQueue<Vector>(dataset.size(),dc);
+		PriorityQueue<String> pq = new PriorityQueue<String>(dataset.size(),dc);
 		pq.addAll(dataset);
-		List<Vector> vectors = new ArrayList<Vector>();
+		List<String> vectors = new ArrayList<String>();
 		for(int i = 0 ; i < resultSize;i++){
 			vectors.add(pq.poll());
 		}
 		return vectors;
-	}
+	}*/
 
 	/**
 	 * Read a data set from a text file. The file has the following contents,
@@ -271,6 +277,7 @@ public class LSH {
 			this.measure=measure;
 		}
 		
+		/*
 	    @Override
 	    public Double call() throws Exception {
 	        for(int i = 0 ; i < 30; i ++){
@@ -281,11 +288,17 @@ public class LSH {
 	        	queriesDone++;
 	        }
 	        return radiusSum/queriesDone;
-	    }
+	    }*/
 	    
 	    public double getRadius(){
 	    	return radiusSum/queriesDone;
 	    }
+
+		@Override
+		public Double call() throws Exception {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
 	

@@ -156,7 +156,7 @@ public class CommandLineInterface {
 			for(int i = 0; i < numberOfHashes.length ; i++){
 				for(int j = 0 ; j < numberOfHashTables.length ; j++){	
 					lsh.buildIndex( numberOfHashes[i], numberOfHashTables[j]);
-					lsh.benchmark(numberOfNeighbours,family.createDistanceMeasure());	
+					// TODO lsh.benchmark(numberOfNeighbours,family.createDistanceMeasure());	
 				}
 			}
 		}
@@ -165,6 +165,7 @@ public class CommandLineInterface {
 
 	
 	private void startLSH(){
+		/* TODO
 		if(linear){
 			if(queries != null){
 				for(Vector query:queries){
@@ -179,20 +180,20 @@ public class CommandLineInterface {
 					System.out.print("\n");
 				}
 			}
-		}else{
+		}else{ */
 			LSH lsh = new LSH(dataset, family);
 			lsh.buildIndex(numberOfHashes,numberOfHashTables);		
 			if(queries != null){
 				for(Vector query:queries){
-					List<Vector> neighbours = lsh.query(query, numberOfNeighbours);
+					List<String> neighbours = lsh.query(query, numberOfNeighbours);
 					System.out.print(query.getKey()+";");
-					for(Vector neighbour:neighbours){
-						System.out.print(neighbour.getKey() + ";");
+					for(String neighbour:neighbours){
+						System.out.print(neighbour + ";");
 					}
 					System.out.print("\n");
 				}
 			}
-		}
+		//}
 	}
 	
 	private HashFamily getHashFamily(double radius,String hashFamilyType,int dimensions){
